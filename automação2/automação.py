@@ -1,20 +1,18 @@
 import xmltodict #passar xml para a biblioteca python
-import os #manuziar arquivos
+import os # manuziar arquivos
 import pandas as pd
 
-# json para formatar o dicionario para ficar melhor d visualizar 
-# try e except posso utilizar para ver aonde esta o erro após isso n é necessário
+# json para formatar o dicionario para ficar melhor de visualizar 
 
 def get_info(name_arq,valores):
-    #fazendo com que o arquivo xml see torne um dicionário python
+    #fazendo com que o arquivo xml se torne um dicionário python
     
-    #print(f'Pegou as informções do arquivo {name_arq}')
     with open(f'nfs/{name_arq}','rb') as arq_xml:
-        dic_arq = xmltodict.parse(arq_xml)
-        if 'NFe' in dic_arq:
-            info_nota = dic_arq['NFe']['infNFe']
+        dic_arquivo = xmltodict.parse(arq_xml)
+        if 'NFe' in dic_arquivo:
+            info_nota = dic_arquivo['NFe']['infNFe']
         else:
-            info_nota = dic_arq['nfeProc']['NFe']['infNFe']    
+            info_nota = dic_arquivo['nfeProc']['NFe']['infNFe']    
         number_not = info_nota['@Id'] 
         empresa_emi= info_nota['emit']['xNome']
         name_clien= info_nota['dest']['xNome']
@@ -32,7 +30,7 @@ valores = []
 for arq in lista_arq:
     get_info(arq,   valores)
 tabela = pd.DataFrame(columns=colunas, data =valores)
-tabela.to_excel("NotasFiscais.xlsx",index=False)
+tabela.to_excel("NotasFiscais.xlsx",index=False) # no Exel já tem contadores de linhas
 
     
                                                     
